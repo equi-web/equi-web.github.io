@@ -1,1 +1,0 @@
-# equi-web.github.io
