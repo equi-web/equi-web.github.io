@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palworld Server Settings</title>
+
+    <!-- Ajouter les liens CDN de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+<!-- Partie en haut avec le formulaire -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        <h1 class="display-1">Palworld Server Settings</h1>
+        <hr />
+        <form id="configForm" class="mb-3">
+
+            <script>
+                // Array des variables
+                const variables = [
+                    'Difficulty', 'DayTimeSpeedRate', 'NightTimeSpeedRate', 'ExpRate', 'PalCaptureRate', 'PalSpawnNumRate', 'PalDamageRateAttack', 'PalDamageRateDefense', 'PlayerDamageRateAttack', 'PlayerDamageRateDefense', 'PlayerStomachDecreaseRate', 'PlayerStaminaDecreaseRate', 'PlayerAutoHPRegeneRate', 'PlayerAutoHpRegeneRateInSleep', 'PalStomachDecreaseRate', 'PalStaminaDecreaseRate', 'PalAutoHPRegeneRate', 'PalAutoHpRegeneRateInSleep', 'BuildObjectDamageRate', 'BuildObjectDeteriorationDamageRate', 'CollectionDropRate', 'CollectionObjectHpRate', 'CollectionObjectRespawnSpeedRate', 'EnemyDropItemRate', 'DeathPenalty', 'DropItemMaxNum', 'DropItemMaxNum_UNKO', 'BaseCampMaxNum', 'BaseCampWorkerMaxNum', 'DropItemAliveMaxHours', 'AutoResetGuildTimeNoOnlinePlayers', 'GuildPlayerMaxNum', 'PalEggDefaultHatchingTime', 'WorkSpeedRate', 'CoopPlayerMaxNum', 'ServerPlayerMaxNum', 'ServerName', 'ServerDescription', 'AdminPassword', 'ServerPassword', 'PublicPort', 'PublicIP', 'RCONPort', 'Region', 'BanListURL'
+
+                ];
+
+                const TrueFalseArray = ['bEnablePlayerToPlayerDamage', 'bEnableFriendlyFire', 'bEnableInvaderEnemy', 'bActiveUNKO', 'bEnableAimAssistPad', 'bEnableAimAssistKeyboard', 'bAutoResetGuildNoOnlinePlayers', 'bIsMultiplay', 'bIsPvP', 'bCanPickupOtherGuildDeathPenaltyDrop', 'bEnableNonLoginPenalty', 'bEnableFastTravel', 'bIsStartLocationSelectByMap', 'bExistPlayerAfterLogout', 'bEnableDefenseOtherGuildPlayer', 'RCONEnabled']
+
+                const defaultValues = {
+                    Difficulty: 'None',
+                    DayTimeSpeedRate: '1.000000',
+                    NightTimeSpeedRate: '1.000000',
+                    ExpRate: '1.000000',
+                    PalCaptureRate: '1.000000',
+                    PalSpawnNumRate: '1.000000',
+                    PalDamageRateAttack: '1.000000',
+                    PalDamageRateDefense: '1.000000',
+                    PlayerDamageRateAttack: '1.000000',
+                    PlayerDamageRateDefense: '1.000000',
+                    PlayerStomachDecreaseRate: '1.000000',
+                    PlayerStaminaDecreaseRate: '1.000000',
+                    PlayerAutoHPRegeneRate: '1.000000',
+                    PlayerAutoHpRegeneRateInSleep: '1.000000',
+                    PalStomachDecreaseRate: '1.000000',
+                    PalStaminaDecreaseRate: '1.000000',
+                    PalAutoHPRegeneRate: '1.000000',
+                    PalAutoHpRegeneRateInSleep: '1.000000',
+                    BuildObjectDamageRate: '1.000000',
+                    BuildObjectDeteriorationDamageRate: '1.000000',
+                    CollectionDropRate: '1.000000',
+                    CollectionObjectHpRate: '1.000000',
+                    CollectionObjectRespawnSpeedRate: '1.000000',
+                    EnemyDropItemRate: '1.000000',
+                    DeathPenalty: 'ALL',
+                    bEnablePlayerToPlayerDamage: 'False',
+                    bEnableFriendlyFire: 'False',
+                    bEnableInvaderEnemy: 'True',
+                    bActiveUNKO: 'False',
+                    bEnableAimAssistPad: 'True',
+                    bEnableAimAssistKeyboard: 'False',
+                    DropItemMaxNum: '3000',
+                    DropItemMaxNum_UNKO: '100',
+                    BaseCampMaxNum: '128',
+                    BaseCampWorkerMaxNum: '15',
+                    DropItemAliveMaxHours: '1.000000',
+                    bAutoResetGuildNoOnlinePlayers: 'False',
+                    AutoResetGuildTimeNoOnlinePlayers: '72.000000',
+                    GuildPlayerMaxNum: '20',
+                    PalEggDefaultHatchingTime: '72.000000',
+                    WorkSpeedRate: '1.000000',
+                    bIsMultiplay: 'False',
+                    bIsPvP: 'False',
+                    bCanPickupOtherGuildDeathPenaltyDrop: 'False',
+                    bEnableNonLoginPenalty: 'True',
+                    bEnableFastTravel: 'True',
+                    bIsStartLocationSelectByMap: 'True',
+                    bExistPlayerAfterLogout: 'False',
+                    bEnableDefenseOtherGuildPlayer: 'False',
+                    CoopPlayerMaxNum: '4',
+                    ServerPlayerMaxNum: '32',
+                    ServerName: 'Default Palworld Server',
+                    ServerDescription: '',
+                    AdminPassword: '',
+                    ServerPassword: '',
+                    PublicPort: '8211',
+                    PublicIP: '',
+                    RCONEnabled: 'False',
+                    RCONPort: '25575',
+                    Region: '',
+                    bUseAuth: 'True',
+                    BanListURL: 'https://api.palworldgame.com/api/banlist.txt'
+                };
+
+                // Générer le formulaire HTML sur trois colonnes
+                const form = document.createElement('form');
+                form.className = 'mb-3';
+                document.querySelector('.col-md-12').appendChild(form);
+
+                const columns = 3;
+                let currentRow;
+
+                for (let i = 0; i < variables.length; i++) {
+                    if (i % columns === 0) {
+                        currentRow = document.createElement('div');
+                        currentRow.className = 'row';
+                        form.appendChild(currentRow);
+                    }
+
+                    const variable = variables[i];
+                    const formGroup = document.createElement('div');
+                    formGroup.className = 'col-md-4 mb-3';
+
+                    const label = document.createElement('label');
+                    label.className = 'form-label';
+                    label.textContent = variable + ': ';
+                    formGroup.appendChild(label);
+
+
+                    if (variable === 'Difficulty') {
+                        const selectDifficulty = document.createElement('select');
+                        selectDifficulty.className = 'form-select';
+                        ['None', 'easy', 'normal', 'hard'].forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            if (option === 'None') {
+                                optionElement.selected = true;
+                            }
+                            selectDifficulty.appendChild(optionElement);
+                        });
+                        formGroup.appendChild(selectDifficulty);
+                    } else if (variable === 'DeathPenalty') {
+                        const selectDeathPenalty = document.createElement('select');
+                        selectDeathPenalty.className = 'form-select';
+                        ['None', 'Item', 'ItemAndEquipment', 'ALL'].forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            if (option === 'All') {
+                                optionElement.selected = true;
+                            }
+                            selectDeathPenalty.appendChild(optionElement);
+                        });
+                        formGroup.appendChild(selectDeathPenalty);
+                    } else {
+                        if (TrueFalseArray.includes(variable)) {
+    const select = document.createElement('select');
+    select.className = 'form-select';
+    select.id = variable;
+    select.name = variable;
+
+    ['True', 'False'].forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.textContent = option;
+        
+        // Check if the option matches the default value and set it as selected
+        if (option === defaultValues[variable]) {
+            optionElement.selected = true;
+        }
+        
+        select.appendChild(optionElement);
+    });
+
+    formGroup.appendChild(select);
+
+                            
+                        }
+                        else
+                        {
+                            const input = document.createElement('input');
+                            input.className = 'form-control';
+                            input.type = 'text';
+                            input.name = variable;
+                            input.value = defaultValues[variable];
+                            formGroup.appendChild(input);
+                        }
+                    }
+
+                    currentRow.appendChild(formGroup);
+                }
+
+                const submitButton = document.createElement('input');
+                submitButton.type = 'button';
+                submitButton.value = 'Submit';
+                submitButton.className = 'btn btn-primary';
+                submitButton.onclick = submitForm;
+                form.appendChild(submitButton);
+
+                function submitForm() {
+                    // Récupérer les valeurs du formulaire et générer le code OptionSettings
+                    const formData = {};
+                    variables.forEach(variable => {
+                        if (variable === 'DeathPenalty') {
+                            // Gérer le cas particulier de "DeathPenalty"
+                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'None';
+                        } else {
+                            formData[variable] = form.elements[variable]?.value || '';
+                        }
+                    });
+
+                    // Générer le code OptionSettings dans le format souhaité
+                    const optionSettingsCode = 'OptionSettings=(' +
+                        Object.entries(formData).map(([key, value]) => `${key}=${value}`).join(',') +
+                        ')';
+
+                    // Mettre à jour le contenu du textarea
+                    document.getElementById('configTextarea').value = optionSettingsCode;
+
+                    // Afficher les données dans la console (à des fins de démonstration)
+                    console.log(formData);
+                }
+
+                // Valeurs par défaut
+                
+
+                // Remplir les champs avec les valeurs par défaut
+                
+            </script>
+        </form>
+    </div>
+</div>
+
+<!-- Partie en dessous avec le textarea -->
+<div class="row">
+    <div class="col-md-12">
+        
+        <h1 class="display-3">Result</h1>
+        <textarea id="configTextarea" class="form-control" rows="20" readonly></textarea>
+    </div>
+</div>
+
+<!-- Ajouter le script Bootstrap (JS) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
