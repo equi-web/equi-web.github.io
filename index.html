@@ -187,15 +187,19 @@
                 submitButton.onclick = submitForm;
                 form.appendChild(submitButton);
 
-                function submitForm() {
+               function submitForm() {
                     // Récupérer les valeurs du formulaire et générer le code OptionSettings
                     const formData = {};
                     variables.forEach(variable => {
                         if (variable === 'DeathPenalty') {
                             // Gérer le cas particulier de "DeathPenalty"
-                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'None';
+                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : '';
                         } else {
-                            formData[variable] = form.elements[variable]?.value || '';
+                            // Ajouter des guillemets pour certaines valeurs
+                            const quotedVariables = ['ServerName', 'ServerDescription', 'AdminPassword', 'ServerPassword', 'PublicIP', 'Region', 'BanListURL'];
+                            formData[variable] = quotedVariables.includes(variable)
+                                ? `"${form.elements[variable]?.value || ''}"`
+                                : form.elements[variable]?.value || '';
                         }
                     });
 
@@ -235,3 +239,4 @@
 
 </body>
 </html>
+# equi-web.github.io
