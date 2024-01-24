@@ -193,8 +193,13 @@
                     variables.forEach(variable => {
                         if (variable === 'DeathPenalty') {
                             // Gérer le cas particulier de "DeathPenalty"
-                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'None';
-                        } else {
+                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'none';
+                        }
+                        else if (variable === 'Difficulty') {
+                            // Gérer le cas particulier de "DeathPenalty"
+                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'none';
+                        }
+                        else {
                             // Ajouter des guillemets pour certaines valeurs
                             const quotedVariables = ['ServerName', 'ServerDescription', 'AdminPassword', 'ServerPassword', 'PublicIP', 'Region', 'BanListURL'];
                             formData[variable] = quotedVariables.includes(variable)
