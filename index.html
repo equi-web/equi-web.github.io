@@ -119,6 +119,7 @@
                     if (variable === 'Difficulty') {
                         const selectDifficulty = document.createElement('select');
                         selectDifficulty.className = 'form-select';
+                        selectDifficulty.name = 'Difficulty';
                         ['None', 'easy', 'normal', 'hard'].forEach(option => {
                             const optionElement = document.createElement('option');
                             optionElement.value = option;
@@ -132,6 +133,7 @@
                     } else if (variable === 'DeathPenalty') {
                         const selectDeathPenalty = document.createElement('select');
                         selectDeathPenalty.className = 'form-select';
+                        selectDeathPenalty.name = 'DeathPenalty';
                         ['None', 'Item', 'ItemAndEquipment', 'ALL'].forEach(option => {
                             const optionElement = document.createElement('option');
                             optionElement.value = option;
@@ -191,14 +193,10 @@
                     // Récupérer les valeurs du formulaire et générer le code OptionSettings
                     const formData = {};
                     variables.forEach(variable => {
-                        if (variable === 'DeathPenalty') {
-                            // Gérer le cas particulier de "DeathPenalty"
-                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'none';
-                        }
-                        else if (variable === 'Difficulty') {
-                            // Gérer le cas particulier de "DeathPenalty"
-                            formData[variable] = form.elements[variable]?.value === 'None' ? 'None' : 'none';
-                        }
+                        if (variable === 'DeathPenalty' || variable === 'Difficulty') {
+                            // Gérer les cas particuliers de "DeathPenalty" et "Difficulty"
+                            formData[variable] = form.elements[variable]?.value === 'None' ? "None" : form.elements[variable]?.value || '';
+                       }
                         else {
                             // Ajouter des guillemets pour certaines valeurs
                             const quotedVariables = ['ServerName', 'ServerDescription', 'AdminPassword', 'ServerPassword', 'PublicIP', 'Region', 'BanListURL'];
